@@ -1,0 +1,21 @@
+extends layout
+
+block content
+  div.container
+    div.row
+      div.col-sm-6.col-md-4.col-md-offset-4
+        #user
+          h1.text-center.login-title Welcome #{user.firstName}. These are the projects you own:
+            div.projects
+              ul.poject-list
+                li Project Name --->   #{project.name}
+                li Assigned to  --->   #{project.assignedTo}
+              a(href='/addproject', class='text-center') Add New Project
+              a(href='/addproject1', class='text-center') Add New Project1
+            div.signup-wall
+              ul.user-details
+                li Username ---> #{user.username}
+                li Email    ---> #{user.email}
+                li First Name ---> #{user.firstName} 
+                li Last Name ---> #{user.lastName}
+            a(href='/signout', class='text-center new-account') Sign Out

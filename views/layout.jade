@@ -1,0 +1,26 @@
+doctype html
+html
+  head
+    title= 'Project Management' 
+    link(rel='stylesheet', href='/stylesheets/comments.css')
+    link(rel='stylesheet', href='/stylesheets/bootstrap.min.css')
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    //link(rel='stylesheet', href='/stylesheets/bootswatch.min.css')
+  body
+    div.navbar.navbar-inverse
+      div.container-fluid
+        div.navbar-header
+          a(href='/home' class='navbar-brand') Home
+        div
+          ul.nav.navbar-nav
+            li
+              a(href='/profile' ) Projects 
+            li
+              a(href='/search' ) Search 
+            li 
+              a(href='/signout') Sign Out 
+    block content
+
+        
+
+

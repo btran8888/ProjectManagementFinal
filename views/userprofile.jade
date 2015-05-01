@@ -1,0 +1,69 @@
+extends layout
+
+block content
+  div.container
+    if viewer.role == "Worker" && viewed.role=="Manager"
+      h4.text-center Projects assigned to you by manager #{viewed.username} 
+      div(class='row', style='border:1px solid black')
+        div 
+          table.table
+            thead
+              tr 
+                th Project Name
+                th.text-right Manager
+            tbody
+              each project in viewersProjects
+                if project.manager == viewed.username
+                  tr  
+                    td #{project.name} 
+                    td.text-right #{project.manager} 
+    if viewer.role == "Manager" && viewed.role=="Root"
+      h4.text-center Projects assigned to you by owner #{viewed.username} 
+      div(class='row', style='border:1px solid black')
+        div 
+          table.table
+            thead
+              tr 
+                th Project Name
+                th.text-right Owner 
+            tbody
+              each project in viewersProjects
+                if project.admin == viewed.username
+                  tr  
+                    td #{project.name} 
+                    td.text-right #{project.admin} 
+    if viewer.role == "Manager" && viewed.role=="Worker"
+      h4.text-center Projects managed by you on which #{viewed.username} is working 
+      div(class='row', style='border:1px solid black')
+        div 
+          table.table
+            thead
+              tr 
+                th Project Name
+                th.text-right Worker 
+            tbody
+              each project in viewersProjects
+                each worker in project.workers
+                  if worker.workerName == viewed.username
+                    tr  
+                      td #{project.name} 
+                      td.text-right #{worker.workerName} 
+    if viewer.role == "Root" && viewed.role=="Manager"
+      h4.text-center Projects assigned by you to #{viewed.username}
+      div(class='row', style='border:1px solid black')
+        div 
+          table.table
+            thead
+              tr 
+                th Project Name
+                th.text-right Manager 
+            tbody
+              each project in viewersProjects
+                if project.manager == viewed.username
+                  tr  
+                    td #{project.name} 
+                    td.text-right #{project.manager} 
+                    
+                
+               
+ 

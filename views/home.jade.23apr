@@ -1,0 +1,39 @@
+extends layout
+
+block content
+  div.container
+    h4.align-center Projects Owned by You 
+      table.table 
+        thead
+          tr
+            th Project Name
+            th Assigned to
+            th Deadline
+         tbody
+         each p in projectx
+           tr  
+             td 
+               a(href='/project/#{p.name}') #{p.name}
+             td 
+               a(href='/user/#{p.assignedTo}') #{p.assignedTo}
+             td 
+               | #{p.deadline }
+  div.container
+    h4 Projects Assigned to you 
+      table.table 
+        thead
+          tr
+            th Project Name
+            th Assigned by 
+            th Deadline
+         tbody
+         each p in projectAssignedx
+           tr  
+             td 
+               a(href='/project/#{p.name}') #{p.name}
+             td 
+               a(href='/user/#{p.assignedTo}') #{p.assignedTo}
+             td 
+               | #{p.deadline }
+
+

@@ -1,0 +1,59 @@
+extends layout
+
+block content
+  div(class='container' style='border: 1px solid black')
+    div.text-center Details of your account 
+    table.table 
+       tbody
+         thead
+           tr
+             th(style='width: 50%;')
+             th(style='width: 50%')
+         tr  
+           td  Login Name
+           td(class='text-right') #{user.username}
+         tr
+           td Email
+           td(class='text-right') #{user.email}
+         tr
+           td Type of User
+           td(class='text-right') #{user.role}
+     
+  div(class='container' style='border: 1px solid black')
+    h5.align-center 
+      div.text-center Projects Owned by You 
+      table.table 
+        thead
+          tr
+            th(class='text-left') Project Name
+            th(class='text-center') Assigned to
+            th(class='text-right') Deadline
+         tbody
+         each p in projectx
+           tr  
+             td 
+               a(href='/project/#{p.name}') #{p.name}
+             td(class='text-center') 
+               a(href='/user/#{p.assignedTo}') #{p.assignedTo}
+             td(class='text-right') 
+               | #{p.deadline }
+  div(class='container' style='border: 1px solid black')
+    h5.align-center 
+      div.text-center Projects assigned To You 
+      table.table 
+        thead
+          tr
+            th(class='text-left') Project Name
+            th(class='text-center') Assigned by 
+            th(class='text-right') Deadline
+         tbody
+         each p in projectAssignedx
+           tr  
+             td 
+               a(href='/project/#{p.name}') #{p.name}
+             td(class='text-center') 
+               a(href='/user/#{p.assignedTo}') #{p.assignedTo}
+             td 
+               | #{p.deadline }
+
+

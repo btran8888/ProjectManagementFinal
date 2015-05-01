@@ -1,0 +1,17 @@
+extends layout
+
+block content
+  div.container
+    div.row
+      div
+        h1.text-center.login-title.text-center Search Results for Project Names 
+          table.table
+            thead
+              tr
+                th.text-center Project Name
+            tbody
+              each projectname in projects
+                tr
+                  td.text-center 
+                    a(href='/project/#{projectname}') #{projectname}
+         

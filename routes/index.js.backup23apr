@@ -1,0 +1,144 @@
+var express = require('express');
+var router = express.Router();
+
+var isAuthenticated = function (req, res, next) {
+	// if user is authenticated in the session, call the next() to call the next request handler 
+	// Passport adds this method to request object. A middleware is allowed to add properties to
+	// request and response objects
+	if (req.isAuthenticated())
+		return next();
+	// if the user is not authenticated then redirect him to the login page
+	res.redirect('/');
+}
+
+module.exports = function(passport){
+
+	/* GET login page. */
+	router.get('/', function(req, res) {
+    	// Display the Login page with any flash message, if any
+		res.render('index', { message: req.flash('message') });
+	});
+
+	/* Handle Login POST */
+	router.post('/login', passport.authenticate('login', {
+		successRedirect: '/home',
+		failureRedirect: '/',
+		failureFlash : true  
+	}));
+
+	/* GET Registration Page */
+	router.get('/signup', function(req, res){
+		res.render('register',{message: req.flash('message')});
+	});
+
+	/* Handle Registration POST */
+	router.post('/signup', passport.authenticate('signup', {
+		successRedirect: '/home',
+		failureRedirect: '/signup',
+		failureFlash : true  
+	}));
+
+	/* GET Home Page */
+	router.get('/home', isAuthenticated, function(req, res){
+		var Project = require('../models/project'); 
+                console.log('-------------------------------------finding a project for username: ' + req.user.username);
+                var projectAssigned = Project.find( {'assignedTo': req.user.username}, function( err, obj1) {
+                                                     projectAssigned = obj1;
+		var project = Project.find( {'admin' : req.user.username }, 
+                                               function(err, obj) {
+                                                     console.log('in findOne. returning obj = ' + obj); 
+                                                     project = obj; 
+                                                     res.render('newhome', {user: req.user, projectx: project, projectAssignedx: projectAssigned});
+                                                     return obj;
+                                                  });
+                                               });
+	});
+
+	/* GET addproject Page */
+	router.get('/addproject', isAuthenticated, function(req, res){
+		res.render('addproject');
+	});
+
+	/* Handle addproject POST */
+	router.post('/addproject', isAuthenticated, function( req, res) {
+                console.log( 'Form ' + req.query.form);
+	        console.log( 'project name: ' + req.body.name);
+ 	        // create newProject
+         	var Project = require('../models/project');
+                var newProject = new Project();
+ 		newProject.name = req.body.name;
+		newProject.assignedTo = req.body.assignedTo;
+                newProject.admin = req.user.username;
+		newProject.save();
+                console.log( '+++++++++++++++++++++++++++++++created project');
+                res.render('addedproject', {user: req.user, project: newProject}); 
+	});
+
+	router.get( '/project/:name', isAuthenticated, function(req,res) {
+                console.log('---------------------------------- in /project/:name. name: ' + req.params.name);
+		var Project = require('../models/project'); 
+		var project = Project.findOne( {'name' : req.params.name }, 
+                                               function(err, obj) {
+                                                     console.log('in findOne. returning obj = ' + obj); 
+                                                     res.render('project', {user: req.user, project: obj});
+                                                     return obj;
+                                               }
+                                             );
+	});
+	
+	router.get( '/user/:name', isAuthenticated, function(req,res) {
+                console.log('---------------------------------- in /user/:name. name: ' + req.params.name);
+		var Project = require('../models/project'); 
+		var project = Project.find( {'admin' : req.user.username, 'assignedTo': req.params.name }, 
+                                               function(err, obj) {
+                                                     console.log('in findOne. returning obj = ' + obj); 
+                                                     res.render('user', {user: req.user, assignedToUser: req.params.name, projects: obj});
+                                                     return obj;
+                                               }
+                                             );
+	});
+	
+	router.get( '/profile', isAuthenticated, function(req,res) {
+		var Project = require('../models/project'); 
+                var projectAssigned = Project.find( {'assignedTo': req.user.username}, function( err, obj1) {
+                                                     projectAssigned = obj1;
+		var project = Project.find( {'admin' : req.user.username }, 
+                                               function(err, obj) {
+                                                     console.log('in findOne. returning obj = ' + obj); 
+                                                     project = obj; 
+                                                     res.render('home', {user: req.user, projectx: project, projectAssignedx: projectAssigned});
+                                                     return obj;
+                                                  });
+                                               });
+	});
+
+        router.get('/delete/:name', isAuthenticated, function(req, res) { 
+		var Project = require('../models/project'); 
+                Project.remove( {'name': req.params.name }, function( err, obj) {
+                     
+
+                var projectAssigned = Project.find( {'assignedTo': req.user.username}, function( err, obj1) {
+                                                     projectAssigned = obj1;
+		var project = Project.find( {'admin' : req.user.username }, 
+                                               function(err, obj) {
+                                                     console.log('in findOne. returning obj = ' + obj); 
+                                                     project = obj; 
+                                                     res.render('home', {user: req.user, projectx: project, projectAssignedx: projectAssigned});
+                                                     return obj;
+                                                  });
+                                               });
+                });
+        });
+	/* Handle Logout */
+	router.get('/signout', function(req, res) {
+		req.logout();
+		res.redirect('/');
+	});
+
+	return router;
+}
+
+
+
+
+

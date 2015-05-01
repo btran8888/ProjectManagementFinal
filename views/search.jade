@@ -1,0 +1,20 @@
+extends layout
+
+block content
+  div.container
+    div.row
+      div.col-sm-6.col-md-4.col-md-offset-4
+        h1.text-center.login-title Search
+          div.signup-wall
+            form(class='form', action='/search', method='POST')
+              input(type='text', name='searchtext', class='form-control', placeholder='enter search string',required, autofocus)
+              select(class='form-control' id='sel1' name='searchtype')
+                option Project Names 
+                option Project Descriptions              
+                option Comments
+              span.clearfix
+              button(class='btn btn-lg btn-primary btn-block', type='submit') Search 
+          #message
+            if message
+              h1.text-center.error-message #{message}
+         
