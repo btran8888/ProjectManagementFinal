@@ -63,7 +63,7 @@ module.exports = function(passport){
 		   var searchtext = req.body.searchtext;
 		   for( var i = 0; i < obj.length; i++) {
 		       console.log('looking for ' + searchtext + '  in ' + obj[i].name);
-		       var pos = obj[i].name.indexOf(searchtext);         
+		       var pos = obj[i].name.toLowerCase().indexOf(searchtext.toLowerCase());         
 		       if( pos == -1) {
        	                   continue;
 		       } else {
@@ -84,7 +84,7 @@ module.exports = function(passport){
 		   var searchtext = req.body.searchtext;
 		   for( var i = 0; i < obj.length; i++) {
 		       console.log('looking for ' + searchtext + '  in ' + obj[i].name);
-		       var pos = obj[i].description.indexOf(searchtext);         
+		       var pos = obj[i].description.toLowerCase().indexOf(searchtext.toLowerCase());         
 		       if( pos == -1) {
        	                   continue;
 		       } else {
@@ -107,7 +107,7 @@ module.exports = function(passport){
 		       console.log('looking for ' + searchtext + '  in comments of ' + obj[i].name);
                        var comments = obj[i].comments; 
                        for ( var j = 0; j < comments.length; j++) {
-		           var pos = comments[j].comment.indexOf(searchtext);         
+		           var pos = comments[j].comment.toLowerCase().indexOf(searchtext.toLowerCase());         
 		           if( pos == -1) {
        	                       continue;
 		           } else {
@@ -481,7 +481,7 @@ function searchProjectNames( req) {
         var searchtext = req.body.searchtext;
         for( var i = 0; i < obj.length; i++) {
             console.log('looking for ' + searchtext + '  in ' + obj[i].name);
-            var pos = obj[i].name.indexOf(searchtext);         
+            var pos = obj[i].name.toLowerCase().indexOf(searchtext.toLowerCase());         
             if( pos == -1) {
                 continue;
             } else {
